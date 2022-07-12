@@ -1,12 +1,19 @@
 {
-	"exe": "app",
+	"exe": "EGoVault",
 	"key": "private.pem",
 	"debug": true,
 	"heapSize": 512,
 	"executableHeap": false,
 	"productID": 1,
 	"securityVersion": 1,
-	"mounts": null,
+    "mounts": [
+        {
+            "source": "/workspaces/EGoVault/db/",
+            "target": "/workspaces/EGoVault/db/",
+            "type": "hostfs",
+            "readOnly": false
+        }
+    ],
 	"env": null,
 	"files": null
 }
