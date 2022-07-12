@@ -1,0 +1,1 @@
+FROM ghcr.io/edgelesssys/ego-dev:nightly AS pull
