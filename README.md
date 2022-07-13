@@ -1,10 +1,10 @@
 # EGoVault
 
 [ARGUMENTS]
-- --help\t\tShow helps menu
-- --seal\t\tSpecify message and path where you can save the encrypted message
-- --unseal\tSpecify path of the seal file
-- --append\tAppend new data to a existent file
+- --help Show helps menu
+- --seal Specify message and path where you can save the encrypted message
+- --unseal Specify path of the seal file
+- --append Append new data to a existent file
 
 [EXAMPLES]
 - ego run app --seal \"your message using double quotes\" <filePathDestination>"
