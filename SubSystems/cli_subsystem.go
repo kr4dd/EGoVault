@@ -2,8 +2,11 @@ package SubSystems
 
 import (
 	"EGoVault/db"
+	"EGoVault/auth"
+	
 	"fmt"
 	"os"
+	"log"
 )
 
 func CliMenu() {
@@ -12,6 +15,12 @@ func CliMenu() {
 	if len(os.Args[1:]) <= 0 {
 		helpMenu()
 	} else {
+		//Authentication
+		if !auth.RequireCredentials() {
+			log.Fatal("Credentials fail!")
+		}
+
+		//App
 		checkParameters(os.Args[1:])
 	}
 

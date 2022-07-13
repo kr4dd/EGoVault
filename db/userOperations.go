@@ -22,7 +22,7 @@ func SealMsg(msg, filePathDestination string, additionalKey []byte) {
 
 	if additionalKey == nil {
 		//Read master key
-		masterKey, err = readMasterKey()
+		masterKey, err = ReadMasterKey()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Failed reading masterKey while sealing: %v\n", err)
 		}
@@ -53,7 +53,7 @@ func SealMsg(msg, filePathDestination string, additionalKey []byte) {
 func UnsealMsgShow(filePathDestination string) {
 	fmt.Println("[+] Trying to unseal data...")
 
-	mK, err := readMasterKey()
+	mK, err := ReadMasterKey()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed reading masterKey while unsealing: %v\n", err)
 	}
@@ -90,7 +90,7 @@ func AppendMsg(msg, filePathDestination string) {
 	fmt.Println("[+] Trying to append data...")
 
 	//Read master key for unseal file
-	masterKey, err := readMasterKey()
+	masterKey, err := ReadMasterKey()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed reading masterKey while append: %v\n", err)
 	}
@@ -105,7 +105,7 @@ func AppendMsg(msg, filePathDestination string) {
 
 }
 
-func readMasterKey() ([]byte, error) {
+func ReadMasterKey() ([]byte, error) {
 	fmt.Println("\nInsert your masterKey: ")
 
 	maskedPassword, err := gopass.GetPasswdMasked()
