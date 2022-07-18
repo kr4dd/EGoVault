@@ -70,7 +70,7 @@ func UnsealMsgShow(filePathDestination string) {
 func getUnsealMsg(masterKey []byte, filePathDestination string) (string, error) {
 	r, err := readBytesFromUnsealedFile(masterKey, filePathDestination)
 	if err != nil {
-		return "", fmt.Errorf("Error getting unseal msg: %v", err)
+		return "", fmt.Errorf("error getting unseal msg: %v", err)
 	}
 
 	return string(r), nil
@@ -80,12 +80,12 @@ func readBytesFromUnsealedFile(masterKey []byte, filePathDestination string) ([]
 	//Read bytes from file
 	var sealedData, unsealData []byte
 	if sealedData, err = ioutil.ReadFile(filePathDestination); err != nil {
-		return nil, fmt.Errorf("Reading unsealed file failed: %v\n", err)
+		return nil, fmt.Errorf("reading unsealed file failed: %v\n", err)
 
 	}
 
 	if unsealData, err = ecrypto.Unseal(sealedData, masterKey); err != nil {
-		return nil, fmt.Errorf("Reading unsealed file failed: %v\n", err)
+		return nil, fmt.Errorf("reading unsealed file failed: %v\n", err)
 	}
 
 	return unsealData, nil
@@ -116,7 +116,7 @@ func ReadMasterKey() ([]byte, error) {
 
 	maskedPassword, err := gopass.GetPasswdMasked()
 	if err != nil {
-		return nil, fmt.Errorf("Reading masterKey failed: %v\n", err)
+		return nil, fmt.Errorf("reading masterKey failed: %v\n", err)
 	}
 
 	return []byte(maskedPassword), nil
