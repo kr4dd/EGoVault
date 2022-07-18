@@ -8,4 +8,4 @@ $(app):
 
 clean:
 	rm -vf *.pem $(app)
-	find db/ -type f -not -name '*.go' -delete
+	#find db/ -type f -not -name '*.(go|json)' -delete

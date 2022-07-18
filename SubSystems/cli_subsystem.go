@@ -16,7 +16,7 @@ func CliMenu() {
 		helpMenu()
 	} else {
 		//Authentication
-		if !auth.RequireCredentials() {
+	 	if !auth.RequireCredentials() {
 			log.Fatal("Credentials fail!")
 		}
 

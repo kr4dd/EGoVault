@@ -1,6 +1,7 @@
 package db
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -11,13 +12,18 @@ import (
 )
 
 var (
-	err error
+	err    error
+	dbPath = "/workspaces/EGoVault/db/users.json"
 )
+
+type CatalogUsers struct {
+	Username, Password string
+}
 
 //Seal message into a file
 func SealMsg(msg, filePathDestination string, additionalKey []byte) {
 	fmt.Println("[+] Trying to seal data...")
-	
+
 	var masterKey, sealData []byte
 
 	if additionalKey == nil {
@@ -100,7 +106,7 @@ func AppendMsg(msg, filePathDestination string) {
 		log.Fatal(err)
 	}
 
-	SealMsg(newMsg + "\n" + msg, filePathDestination, masterKey)
+	SealMsg(newMsg+"\n"+msg, filePathDestination, masterKey)
 	fmt.Println("[+] Data was appended and Seal ...")
 
 }
@@ -114,4 +120,26 @@ func ReadMasterKey() ([]byte, error) {
 	}
 
 	return []byte(maskedPassword), nil
+}
+
+func ReadUsersDB(user, pass string) bool {
+	f, err := os.Open(dbPath)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fBytes, _ := ioutil.ReadAll(f)
+	defer f.Close()
+
+	var data []CatalogUsers
+	json.Unmarshal(fBytes, &data)
+
+	for i := 0; i < len(data); i++ {
+		if (data[i].Username == user) && (data[i].Password == pass) {
+			return true
+		}
+	}
+
+	return false
+
 }

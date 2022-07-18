@@ -1,37 +1,37 @@
 package auth
 
 import (
+	"EGoVault/db"
+	"bufio"
 	"fmt"
 	"log"
-	"strings"
 	"os"
-	"bufio"
+	"strings"
+
 	"github.com/howeyc/gopass"
 )
 
 var (
-	err error 
+	err error
 )
 
 func RequireCredentials() bool {
-  	user, err := readUser()
+	user, err := readUser()
 	if err != nil {
 		log.Fatal(err)
 	}
- 
+
 	pass, err := readPasswd()
 	if err != nil {
 		log.Fatal(err)
 	}
-	
-	u, p := strings.ToLower(strings.Trim(user, " ")), pass
-	
-	//TODO: check user credentials from a server folder
-	fmt.Println(u, p)
 
-	return false 
+	//TODO: limpiar caracteres extranhos y inputs raros para User
+	u, p := strings.TrimSuffix(strings.Trim(user, " "), "\n"), pass
+
+	return db.ReadUsersDB(u, string(p))
+
 }
-
 
 func readPasswd() ([]byte, error) {
 	fmt.Println("\nInsert your password: ")
