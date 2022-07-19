@@ -20,14 +20,13 @@ func CliMenu() {
 		auth.RequireUserCreation()
 
 		//Authentication
-		db.UnCipherDBData()
 		if !auth.RequireCredentials() {
+			db.CipherDBData()
 			log.Fatal("Credentials fail!")
 		}
 
 		//App
 		checkParameters(os.Args[1:])
-		db.CipherDBData()
 	}
 
 }
@@ -39,26 +38,33 @@ func checkParameters(parameters []string) {
 	case "--seal":
 		if len(os.Args[2:]) != 2 {
 			fmt.Println(badParams)
+			db.CipherDBData()
 			os.Exit(1)
 		}
 		db.SealMsg(parameters[1], parameters[2], nil)
+		db.CipherDBData()
 
 	case "--unseal":
 		if len(os.Args[2:]) != 1 {
 			fmt.Println(badParams)
+			db.CipherDBData()
 			os.Exit(1)
 		}
 		db.UnsealMsgShow(parameters[1])
+		db.CipherDBData()
+
 	case "--append":
 		if len(os.Args[2:]) != 2 {
 			fmt.Println(badParams)
+			db.CipherDBData()
 			os.Exit(1)
 		}
 		db.AppendMsg(parameters[1], parameters[2])
+		db.CipherDBData()
 	default:
 		helpMenu()
+		db.CipherDBData()
 	}
-
 }
 
 func helpMenu() {

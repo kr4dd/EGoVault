@@ -86,12 +86,12 @@ func readBytesFromUnsealedFile(masterKey []byte, filePathDestination string) ([]
 	//Read bytes from file
 	var sealedData, unsealData []byte
 	if sealedData, err = ioutil.ReadFile(filePathDestination); err != nil {
-		return nil, fmt.Errorf("reading unsealed file failed: %v\n", err)
+		return nil, fmt.Errorf("reading unsealed file failed: %v", err)
 
 	}
 
 	if unsealData, err = ecrypto.Unseal(sealedData, masterKey); err != nil {
-		return nil, fmt.Errorf("reading unsealed file failed: %v\n", err)
+		return nil, fmt.Errorf("reading unsealed file failed: %v", err)
 	}
 
 	return unsealData, nil
@@ -122,7 +122,7 @@ func ReadMasterKey() ([]byte, error) {
 
 	maskedPassword, err := gopass.GetPasswdMasked()
 	if err != nil {
-		return nil, fmt.Errorf("reading masterKey failed: %v\n", err)
+		return nil, fmt.Errorf("reading masterKey failed: %v", err)
 	}
 
 	return []byte(maskedPassword), nil
@@ -133,11 +133,9 @@ func ReadUserDB(user, pass string) bool {
 
 	json.Unmarshal(readDBContent(), &data)
 
-	//for i := 0; i < len(data); i++ {
 	if (data.Username == user) && (data.Password == pass) {
 		return true
 	}
-	//}
 
 	return false
 
@@ -158,8 +156,7 @@ func readDBContent() []byte {
 
 func CreateUserDB(user string, password []byte) {
 	var data CatalogUser
-	data.Username = user
-	data.Password = string(password)
+	data.Username, data.Password = user, string(password)
 
 	file, _ := json.MarshalIndent(data, "", " ")
 

@@ -12,6 +12,8 @@ import (
 )
 
 func RequireCredentials() bool {
+	db.UnCipherDBData()
+
 	fmt.Println("[*] Login:")
 	user, err := readUser()
 	if err != nil {
@@ -35,7 +37,7 @@ func readPasswd() ([]byte, error) {
 
 	maskedPassword, err := gopass.GetPasswdMasked()
 	if err != nil {
-		return nil, fmt.Errorf("reading password failed: %v\n", err)
+		return nil, fmt.Errorf("reading password failed: %v", err)
 	}
 
 	return []byte(maskedPassword), nil
@@ -46,7 +48,7 @@ func readUser() (string, error) {
 
 	user, err := bufio.NewReader(os.Stdin).ReadString('\n')
 	if err != nil {
-		return "", fmt.Errorf("reading user failed: %v\n", err)
+		return "", fmt.Errorf("reading user failed: %v", err)
 	}
 
 	return user, nil

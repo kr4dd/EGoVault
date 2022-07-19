@@ -26,7 +26,6 @@ func cipherPlainPasswords(enclaveUniqueKey, enclaveUniqueKeyInfo []byte) {
 	var data CatalogUser
 	json.Unmarshal(readDBContent(), &data)
 
-	//for i := 0; i < len(data); i++ {
 	p := data.Password
 	ep, err := ecrypto.Encrypt([]byte(p), enclaveUniqueKey, enclaveUniqueKeyInfo)
 	if err != nil {
@@ -36,7 +35,6 @@ func cipherPlainPasswords(enclaveUniqueKey, enclaveUniqueKeyInfo []byte) {
 	epBase64 := b64.StdEncoding.EncodeToString(ep)
 
 	data.Password = epBase64
-	//}
 
 	file, _ := json.MarshalIndent(data, "", " ")
 
@@ -56,7 +54,6 @@ func UnCipherPasswords(enclaveUniqueKey, enclaveUniqueKeyInfo []byte) {
 	var data CatalogUser
 	json.Unmarshal(readDBContent(), &data)
 
-	//for i := 0; i < len(data); i++ {
 	epBase64 := data.Password
 
 	ep, err := b64.StdEncoding.DecodeString(epBase64)
@@ -70,7 +67,6 @@ func UnCipherPasswords(enclaveUniqueKey, enclaveUniqueKeyInfo []byte) {
 	}
 
 	data.Password = string(p)
-	//}
 
 	file, _ := json.MarshalIndent(data, "", " ")
 

@@ -7,6 +7,6 @@
 - --append Append new data to a existent file
 
 [EXAMPLES]
-- ego run app --seal \"your message using double quotes\" <filePathDestination>"
-- ego run app --unseal <filePathDestination>
-- ego run app --append \"your NEW message using double quotes\" <existentFile>
+- ego run app --seal "your message using double quotes" "filePathDestination"
+- ego run app --unseal "filePathDestination"
+- ego run app --append "your NEW message using double quotes" "existentFile"
