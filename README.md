@@ -1,4 +1,5 @@
 # EGoVault
+![chest](EGoVault.png?raw=true "EGoVault")
 
 [ARGUMENTS]
 - --help Show helps menu
