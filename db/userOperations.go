@@ -12,11 +12,14 @@ import (
 )
 
 var (
-	err    error
-	dbPath = "/workspaces/EGoVault/db/users.json"
+	err error
 )
 
-type CatalogUsers struct {
+const (
+	DB_PATH = "/workspaces/EGoVault/db/user.json"
+)
+
+type CatalogUser struct {
 	Username, Password string
 }
 
@@ -64,7 +67,10 @@ func UnsealMsgShow(filePathDestination string) {
 		fmt.Fprintf(os.Stderr, "Failed reading masterKey while unsealing: %v\n", err)
 	}
 	r, err := readBytesFromUnsealedFile(mK, filePathDestination)
-	fmt.Println("Unsealed data: \n" + string(r))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed reading bytes from unsealed file: %v\n", err)
+	}
+	fmt.Println("unsealed data: \n" + string(r))
 }
 
 func getUnsealMsg(masterKey []byte, filePathDestination string) (string, error) {
@@ -122,8 +128,23 @@ func ReadMasterKey() ([]byte, error) {
 	return []byte(maskedPassword), nil
 }
 
-func ReadUsersDB(user, pass string) bool {
-	f, err := os.Open(dbPath)
+func ReadUserDB(user, pass string) bool {
+	var data CatalogUser
+
+	json.Unmarshal(readDBContent(), &data)
+
+	//for i := 0; i < len(data); i++ {
+	if (data.Username == user) && (data.Password == pass) {
+		return true
+	}
+	//}
+
+	return false
+
+}
+
+func readDBContent() []byte {
+	f, err := os.Open(DB_PATH)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -131,15 +152,16 @@ func ReadUsersDB(user, pass string) bool {
 	fBytes, _ := ioutil.ReadAll(f)
 	defer f.Close()
 
-	var data []CatalogUsers
-	json.Unmarshal(fBytes, &data)
+	return fBytes
 
-	for i := 0; i < len(data); i++ {
-		if (data[i].Username == user) && (data[i].Password == pass) {
-			return true
-		}
-	}
+}
 
-	return false
+func CreateUserDB(user string, password []byte) {
+	var data CatalogUser
+	data.Username = user
+	data.Password = string(password)
 
+	file, _ := json.MarshalIndent(data, "", " ")
+
+	_ = ioutil.WriteFile(DB_PATH, file, 0644)
 }

@@ -11,11 +11,8 @@ import (
 	"github.com/howeyc/gopass"
 )
 
-var (
-	err error
-)
-
 func RequireCredentials() bool {
+	fmt.Println("[*] Login:")
 	user, err := readUser()
 	if err != nil {
 		log.Fatal(err)
@@ -26,10 +23,10 @@ func RequireCredentials() bool {
 		log.Fatal(err)
 	}
 
-	//TODO: limpiar caracteres extranhos y inputs raros para User
+	//TODO: clean strange user inputs
 	u, p := strings.TrimSuffix(strings.Trim(user, " "), "\n"), pass
 
-	return db.ReadUsersDB(u, string(p))
+	return db.ReadUserDB(u, string(p))
 
 }
 
@@ -38,7 +35,7 @@ func readPasswd() ([]byte, error) {
 
 	maskedPassword, err := gopass.GetPasswdMasked()
 	if err != nil {
-		return nil, fmt.Errorf("Reading password failed: %v\n", err)
+		return nil, fmt.Errorf("reading password failed: %v\n", err)
 	}
 
 	return []byte(maskedPassword), nil
@@ -49,8 +46,37 @@ func readUser() (string, error) {
 
 	user, err := bufio.NewReader(os.Stdin).ReadString('\n')
 	if err != nil {
-		return "", fmt.Errorf("Reading user failed: %v\n", err)
+		return "", fmt.Errorf("reading user failed: %v\n", err)
 	}
 
 	return user, nil
+}
+
+func RequireUserCreation() {
+	if _, err := os.Stat(db.DB_PATH); err == nil {
+		fmt.Println("[!] User was registred previously")
+	} else {
+		//User doesnt exists, create it
+		createUser()
+		db.CipherDBData()
+	}
+
+}
+
+func createUser() {
+	fmt.Println("[*] Create user: ")
+	user, err := readUser()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	pass, err := readPasswd()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//TODO: clean strange user inputs
+	u, p := strings.TrimSuffix(strings.Trim(user, " "), "\n"), pass
+
+	db.CreateUserDB(u, p)
 }

@@ -1,6 +1,9 @@
 app = EGoVault
 workPath = $(pwd)
 
+getid: sign
+	ego uniqueid $(app)
+
 sign: $(app)
 	ego sign $<
 
@@ -9,4 +12,4 @@ $(app):
 
 clean:
 	rm -vf *.pem $(app)
-	cd db ; ls | grep -vE "*.(go|json)" | xargs rm -f ; cd $(workPath)
+	cd db ; ls | grep -vE "*.(go)" | xargs rm -f ; cd $(workPath)

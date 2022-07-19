@@ -1,27 +1,33 @@
 package SubSystems
 
 import (
-	"EGoVault/db"
 	"EGoVault/auth"
-	
+	"EGoVault/db"
+
 	"fmt"
-	"os"
 	"log"
+	"os"
 )
 
 func CliMenu() {
 	fmt.Fprintf(os.Stdout, "Welcome to EGoVault:\n\n")
 
+	//db.UnCipherDBData()
 	if len(os.Args[1:]) <= 0 {
 		helpMenu()
 	} else {
+		//Require user creation
+		auth.RequireUserCreation()
+
 		//Authentication
-	 	if !auth.RequireCredentials() {
+		db.UnCipherDBData()
+		if !auth.RequireCredentials() {
 			log.Fatal("Credentials fail!")
 		}
 
 		//App
 		checkParameters(os.Args[1:])
+		db.CipherDBData()
 	}
 
 }
