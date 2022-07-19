@@ -12,7 +12,6 @@ import (
 func CliMenu() {
 	fmt.Fprintf(os.Stdout, "Welcome to EGoVault:\n\n")
 
-	//db.UnCipherDBData()
 	if len(os.Args[1:]) <= 0 {
 		helpMenu()
 	} else {
@@ -75,11 +74,9 @@ func helpMenu() {
 	fmt.Println("--append\tAppend new data to a existent file")
 
 	fmt.Print("\n[EXAMPLES]\n")
-	seal := "--seal \"your message using double quotes\" <filePathDestination>"
-	unseal := "--unseal <filePathDestination>"
-	append := "--append \"your NEW message using double quotes\" <existentFile>"
+	cmd := "ego run app "
 
-	fmt.Println("ego run app " + seal)
-	fmt.Println("ego run app " + unseal)
-	fmt.Println("ego run app " + append)
+	fmt.Println(cmd + "--seal \"your message using double quotes\" <filePathDestination>")
+	fmt.Println(cmd + "--unseal <filePathDestination>")
+	fmt.Println(cmd + "--append \"your NEW message using double quotes\" <existentFile>")
 }
