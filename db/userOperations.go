@@ -130,14 +130,19 @@ func ReadMasterKey() ([]byte, error) {
 
 func ReadUserDB(user, pass string) bool {
 	var data CatalogUser
+	validUser := false
+
+	UnCipherDBData()
 
 	json.Unmarshal(readDBContent(), &data)
 
 	if (data.Username == user) && (data.Password == pass) {
-		return true
+		validUser = true
 	}
 
-	return false
+	CipherDBData()
+
+	return validUser
 
 }
 
@@ -154,11 +159,13 @@ func readDBContent() []byte {
 
 }
 
-func CreateUserDB(user string, password []byte) {
+func CreateAndCipherUserDB(user string, password []byte) {
 	var data CatalogUser
 	data.Username, data.Password = user, string(password)
 
 	file, _ := json.MarshalIndent(data, "", " ")
 
 	_ = ioutil.WriteFile(DB_PATH, file, 0644)
+
+	CipherDBData()
 }

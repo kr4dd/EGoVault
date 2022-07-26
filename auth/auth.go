@@ -12,7 +12,6 @@ import (
 )
 
 func RequireCredentials() bool {
-	db.UnCipherDBData()
 
 	fmt.Println("[*] Login:")
 	user, err := readUser()
@@ -60,7 +59,6 @@ func RequireUserCreation() {
 	} else {
 		//User doesnt exists, create it
 		createUser()
-		db.CipherDBData()
 	}
 
 }
@@ -80,5 +78,5 @@ func createUser() {
 	//TODO: clean strange user inputs
 	u, p := strings.TrimSuffix(strings.Trim(user, " "), "\n"), pass
 
-	db.CreateUserDB(u, p)
+	db.CreateAndCipherUserDB(u, p)
 }
