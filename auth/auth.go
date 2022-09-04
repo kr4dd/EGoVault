@@ -24,7 +24,7 @@ func RequireCredentials() bool {
 		log.Fatal(err)
 	}
 
-	//TODO: clean strange user inputs
+	// TODO: clean strange user inputs
 	u, p := strings.TrimSuffix(strings.Trim(user, " "), "\n"), pass
 
 	return db.ReadUserDB(u, string(p))
@@ -75,7 +75,7 @@ func createUser() {
 		log.Fatal(err)
 	}
 
-	//TODO: clean strange user inputs
+	// TODO: clean strange user inputs
 	u, p := strings.TrimSuffix(strings.Trim(user, " "), "\n"), pass
 
 	db.CreateAndCipherUserDB(u, p)
